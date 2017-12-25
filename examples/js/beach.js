@@ -138,17 +138,16 @@
 
      function loadModels() {
          THREE.ARUtils.loadModel({
-             objPath: "models/chris/chris.obj",
-             mtlPath: "models/chris/chris.mtl",
+             objPath: "./models/chris/chris.obj",
+             mtlPath: "./models/chris/chris.mtl",
              OBJLoader: undefined, // uses window.THREE.OBJLoader by default
              MTLLoader: undefined, // uses window.THREE.MTLLoader by default
          }).then(function(group) {
-             models_obj = obj;
-             model.children.forEach(function(mesh) { mesh.castShadow = true; });
-             models_obj.scale.set(0.1, 0.1, 0.1);
+             models_obj = group;
+             // model.children.forEach(function(mesh) { mesh.castShadow = true; });
+             models_obj.scale.set(0.3, 0.3, 0.3);
              models_obj.position.set(Math.cos(-0.6) * BOX_DISTANCE, camera.position.y - 0.25, Math.sin(-0.6) * BOX_DISTANCE);
              scene.add(models_obj);
-
          });
 
          // var mtlLoader = new THREE.MTLLoader();

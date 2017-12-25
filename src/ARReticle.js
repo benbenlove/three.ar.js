@@ -14,14 +14,21 @@
  */
 
 import {
-    placeObjectAtHit
-} from './ARUtils';
+    Mesh,
+    RingGeometry,
+    MeshBasicMaterial,
+    Matrix4,
+    Math as Math3,
+    Vector3,
+} from 'three';
+
+import { placeObjectAtHit } from './ARUtils';
 
 /**
  * Class for creating a mesh that fires raycasts and lerps
  * a 3D object along the surface
  */
-class ARReticle extends THREE.Mesh {
+class ARReticle extends Mesh {
     /**
      * @param {VRDisplay} vrDisplay
      * @param {number} innerRadius
@@ -36,13 +43,11 @@ class ARReticle extends THREE.Mesh {
         color = 0xff0077,
         easing = 0.25
     ) {
-        const geometry = new THREE.RingGeometry(innerRadius, outerRadius, 36, 64);
-        const material = new THREE.MeshBasicMaterial({
-            color
-        });
+        const geometry = new RingGeometry(innerRadius, outerRadius, 36, 64);
+        const material = new MeshBasicMaterial({ color });
 
         // Orient the geometry so it's position is flat on a horizontal surface
-        geometry.applyMatrix(new THREE.Matrix4().makeRotationX(THREE.Math.degToRad(-90)));
+        geometry.applyMatrix(new Matrix4().makeRotationX(Math3.degToRad(-90)));
 
         super(geometry, material);
         this.visible = false;
@@ -50,7 +55,7 @@ class ARReticle extends THREE.Mesh {
         this.easing = easing;
         this.applyOrientation = true;
         this.vrDisplay = vrDisplay;
-        this._planeDir = new THREE.Vector3();
+        this._planeDir = new Vector3();
     }
 
     /**
@@ -73,5 +78,4 @@ class ARReticle extends THREE.Mesh {
     }
 }
 
-THREE.ARReticle = ARReticle;
 export default ARReticle;
