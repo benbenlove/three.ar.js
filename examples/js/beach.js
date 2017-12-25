@@ -8,8 +8,8 @@
 
 
      Flipsnap('.flipsnap', {
-         distance: 230,
-         transitionDuration: 1000
+         distance: 210,
+         transitionDuration: 600
      });
 
      /**
@@ -147,15 +147,15 @@
              objLoader.setMaterials(materials);
              objLoader.load('models/chris/chris.obj', function(obj) {
 
-                 // object.traverse(function(child) {
-                 //     if (child instanceof THREE.Mesh) {
-                 //         // child.material.map = texture;
-                 //     }
-                 // });
+                 obj.traverse(function(child) {
+                     if (child instanceof THREE.Mesh) {
+                         child.material.map = new THREE.TextureLoader().load( "models/chris/rainbow.png" );
+                     }
+                 });
 
                  models_obj = obj;
                  models_obj.scale.set(0.1, 0.1, 0.1);
-                 models_obj.position.set(Math.cos(0.2) * BOX_DISTANCE, camera.position.y - 0.25, Math.sin(0.2) * BOX_DISTANCE);
+                 models_obj.position.set(Math.cos(-0.6) * BOX_DISTANCE, camera.position.y - 0.25, Math.sin(-0.6) * BOX_DISTANCE);
                  scene.add(models_obj);
 
              }, function() {
@@ -163,9 +163,4 @@
              }, function() {});
          })
      }
-
-
-
-     alert(Math.random());
-
  }
