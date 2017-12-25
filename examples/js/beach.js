@@ -137,30 +137,44 @@
      var models_obj;
 
      function loadModels() {
-         var mtlLoader = new THREE.MTLLoader();
-         mtlLoader.setPath('models/chris/');
-         mtlLoader.load('chris.mtl', function(materials) {
-             materials.preload();
+         THREE.ARUtils.loadModel({
+             objPath: "models/chris/chris.obj",
+             mtlPath: "models/chris/chris.mtl",
+             OBJLoader: undefined, // uses window.THREE.OBJLoader by default
+             MTLLoader: undefined, // uses window.THREE.MTLLoader by default
+         }).then(function(group) {
+             models_obj = obj;
+             model.children.forEach(function(mesh) { mesh.castShadow = true; });
+             models_obj.scale.set(0.1, 0.1, 0.1);
+             models_obj.position.set(Math.cos(-0.6) * BOX_DISTANCE, camera.position.y - 0.25, Math.sin(-0.6) * BOX_DISTANCE);
+             scene.add(models_obj);
+
+         });
+
+         // var mtlLoader = new THREE.MTLLoader();
+         // mtlLoader.setPath('models/chris/');
+         // mtlLoader.load('chris.mtl', function(materials) {
+         //     materials.preload();
 
 
-             var objLoader = new THREE.OBJLoader();
-             objLoader.setMaterials(materials);
-             objLoader.load('models/chris/chris.obj', function(obj) {
+         //     var objLoader = new THREE.OBJLoader();
+         //     objLoader.setMaterials(materials);
+         //     objLoader.load('models/chris/chris.obj', function(obj) {
 
-                 obj.traverse(function(child) {
-                     if (child instanceof THREE.Mesh) {
-                         child.material.map = new THREE.TextureLoader().load( "models/chris/rainbow.png" );
-                     }
-                 });
+         //         obj.traverse(function(child) {
+         //             if (child instanceof THREE.Mesh) {
+         //                 child.material.map = new THREE.TextureLoader().load("models/chris/rainbow.png");
+         //             }
+         //         });
 
-                 models_obj = obj;
-                 models_obj.scale.set(0.1, 0.1, 0.1);
-                 models_obj.position.set(Math.cos(-0.6) * BOX_DISTANCE, camera.position.y - 0.25, Math.sin(-0.6) * BOX_DISTANCE);
-                 scene.add(models_obj);
+         //         models_obj = obj;
+         //         models_obj.scale.set(0.1, 0.1, 0.1);
+         //         models_obj.position.set(Math.cos(-0.6) * BOX_DISTANCE, camera.position.y - 0.25, Math.sin(-0.6) * BOX_DISTANCE);
+         //         scene.add(models_obj);
 
-             }, function() {
+         //     }, function() {
 
-             }, function() {});
-         })
+         //     }, function() {});
+         // })
      }
  }
