@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <title>ARcore demos</title>
+    <style type="text/css">
+    body,
+    html {
+        padding: 0;
+        margin: 0;
+    }
+
+    #container {
+        width: 80%;
+        margin: 0 auto;
+        padding: 80px 20px 20px 20px;
+    }
+
+    a {
+        text-decoration: none;
+        font-size: 20px;
+        display: block;
+    }
+    </style>
+</head>
+
+<body>
+    <div id="container">
+
+        <h2>Summery</h2>
+        <hr>
+        <a href="javascript:window.location.reload()" style="color: red">ReLoad</a>
+        <h2>ARkit</h2>
+        <hr>
+        <a href="https://developers.google.com/ar/develop/web/getting-started#examples">[ARkit]谷歌官方demo连接</a>
+
+        <a data-h="reticle.html">[ARkit]reticle.html</a>
+        <a data-h="boilerplate.html">[ARkit]boilerplate.html</a>
+        <a data-h="spawn-at-camera.html">[ARkit]spawn-at-camera.html</a>
+        <a data-h="spawn-at-surface.html">[ARkit]spawn-at-surface.html</a>
+        <a data-h="beach.html">[ARkit]beach.html（选择模型）</a>
+        <a data-h="graffiti.html">[ARkit]graffiti.html</a>
+        <a data-h="record-at-camera.html">[ARkit]record-at-camera.html</a>
+        
+        <a data-h="http://debug062.waptest.taobao.net/github/three.ar.js/examples/beach.html">[ARkit]beach.html（选择模型:内网）</a>
+
+
+        <a data-h="http://debug062.waptest.taobao.net/glcoud/three.ar.js/examples/load-model.html">[ARkit]Load Models</a>
+
+        <a data-h="draggablecubes.html">[ARkit]draggablecubes.html</a>
+        <a data-h="floorEffect.html">[ARkit]floorEffect.html</a>
+
+        <h2>WebVR</h2>
+        <hr>
+        <a href="https://threejs.org/examples/webvr_rollercoaster.html">[WebVR]webvr_rollercoaster.html</a>
+        <a href="https://mdn.github.io/webvr-tests/basic-display-info/">[WebVR]basic-display-info</a>
+        <a href="https://mdn.github.io/webvr-tests/aframe-demo/">[WebVR]aframe-demo</a>
+        <a href="https://mdn.github.io/webvr-tests/raw-webgl-example/">[WebVR]raw-webgl-example</a>
+
+    </div>
+    <script type="text/javascript">
+    var aa = document.getElementsByTagName('a');
+    for (var i = 0, len = aa.length; i < len; i++) {
+        if (aa[i].getAttribute("data-h") != null)
+            aa[i].href += aa[i].getAttribute("data-h") + 　"?t=" + Date.now();
+    }
+    </script>
+</body>
+
+</html>

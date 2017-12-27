@@ -1,0 +1,99 @@
+<!--
+/*
+ * Copyright 2017 Google Inc. All Rights Reserved.
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+-->
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <title>three.ar.js - Boilerplate</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, user-scalable=no,
+  minimum-scale=1.0, maximum-scale=1.0">
+    <link rel="stylesheet" href="style/style.css">
+    <script src="//g.alicdn.com/tmapp/animation-data/4.1.37/jc/tools/vconsole.min.js"></script>
+    <style>
+    body {
+        font-family: monospace;
+        margin: 0;
+        overflow: hidden;
+        position: fixed;
+        width: 100%;
+        height: 100vh;
+        -webkit-user-select: none;
+        user-select: none;
+    }
+
+    #container {
+        position: absolute;
+        z-index: 10000;
+        bottom: 30px;
+        left: 0px;
+        right: 0px;
+        height: 200px;
+    }
+
+
+    .title {
+        color: rgba(255, 255, 255, 0.9);
+        background-color: rgba(40, 40, 40, 0.4);
+        margin-left: 0.2em;
+    }
+
+    canvas {
+        position: absolute;
+        top: 0;
+        left: 0;
+    }
+
+    .flipsnap{
+        z-index: 10000;
+    }
+    </style>
+</head>
+
+<body>
+    <div id="container">
+        <section class="demo" id="demo-transitionDuration">
+            <h3>选择模型</h3>
+            <div class="viewport">
+                <div class="flipsnap">
+                    <div class="item">1</div>
+                    <div class="item">2</div>
+                    <div class="item">3</div>
+                    <div class="item">4</div>
+                    <div class="item">6</div>
+                    <div class="item">7</div>
+                    <div class="item">8</div>
+                    <div class="item">9</div>
+                    <div class="item">10</div>
+                    <div class="item">11</div>
+                </div>
+            </div>
+        </section>
+    </div>
+    <script src="../third_party/three.js/three.js?t=1"></script>
+    <script src="../third_party/three.js/VRControls.js"></script>
+    <script src="../third_party/three.js/OBJLoader.js?t=1"></script>
+    <script src="../third_party/three.js/MTLLoader.js?t=1"></script>
+
+
+    <script src="../third_party/flipsnap.min.js"></script>
+    <!-- <script src="../third_party/jquery.js"></script> -->
+    <script src="../dist/three.ar.js?t=1"></script>
+    <script src="./js/beach.js?t=41"></script>
+</body>
+
+</html>
