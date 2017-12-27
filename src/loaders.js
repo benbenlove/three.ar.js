@@ -22,28 +22,28 @@ const noop = function() {};
 
 // remaps opacity from 0 to 1
 const opacityRemap = function(mat) {
-    if (mat.opacity === 0) {
-        mat.opacity = 1;
-    }
+  if (mat.opacity === 0) {
+    mat.opacity = 1;
+  }
 };
 
 export const loadObj = (objPath, materialCreator, OBJLoader) => new Promise((resolve, reject) => {
-    const loader = new OBJLoader();
+  const loader = new OBJLoader();
 
-    if (materialCreator) {
-        Object.keys(materialCreator.materials).forEach(k => opacityRemap(materialCreator.materials[k]));
-        loader.setMaterials(materialCreator);
-    }
+  if (materialCreator) {
+    Object.keys(materialCreator.materials).forEach(k => opacityRemap(materialCreator.materials[k]));
+    loader.setMaterials(materialCreator);
+  }
 
-    loader.load(objPath, resolve, noop, reject);
+  loader.load(objPath, resolve, noop, reject);
 });
 
 export const loadMtl = (mtlPath, MTLLoader) => new Promise((resolve, reject) => {
-    const loader = new MTLLoader();
+  const loader = new MTLLoader();
 
-    loader.setTexturePath(mtlPath.substr(0, mtlPath.lastIndexOf('/') + 1));
-    // remaps ka, kd, & ks values of 0,0,0 -> 1,1,1
-    loader.setMaterialOptions({ ignoreZeroRGBs: true });
+  loader.setTexturePath(mtlPath.substr(0, mtlPath.lastIndexOf('/') + 1));
+  // remaps ka, kd, & ks values of 0,0,0 -> 1,1,1
+  loader.setMaterialOptions({ ignoreZeroRGBs: true });
 
-    loader.load(mtlPath, resolve, noop, reject);
+  loader.load(mtlPath, resolve, noop, reject);
 });

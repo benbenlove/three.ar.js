@@ -9,7 +9,7 @@ Basic smartphone based Augmented Reality (AR) web applications can be enabled wi
 This extension mainly focuses on smartphone based AR where there are 3 basic elements that enable AR experiences:
 
 * **Motion tracking**: The device needs to know its exact location and orientation in 3D space. This is called 6 Degrees Of Freedom ([6DOF]) motion tracking.
-* **Rendering the pass through camera**: Smartphones allow to render virtual content on top of the reality represented by the feed provided by the camera they have.
+* **Rendering the pass through camera**: Smartphones allow rendering virtual content on top of the reality represented by the feed provided by the camera.
 * **Basic understanding of the real world**: Motion tracking provides the exact location of the device in the real world but apart from that, the device does not understand much more from it. In order to be able to interact with the real world correctly, some basic understanding is very valuable. Current Smartphone AR technology provides different ways to identify planes in the real world (or even more complex information like meshes or objects like markers or even complete point clouds). This way, virtual objects can be anchored in the real world so they appear to interact with it as a human would expect them to.
 
 ## Features
@@ -34,7 +34,7 @@ A new property has been added to [VRDisplayCapabilities] that indicate the exist
 
 ### Basic understanding of the real world
 
-There are multiple ways to get some information in an AR system about the real world surrounding the device. For now, the WebVR extension for AR exposes one of the simplest possible: throw a ray from the device perspective into the real world and let the app know if there has been a hit against any of the elements the system understands from the real world.
+There are multiple ways to get some information in an AR system about the real world surrounding the device. For now the WebVR extension for AR exposes one of the simplest possible: throw a ray from the device perspective into the real world and let the app know if there has been a hit against any of the elements the system understands from the real world.
 
 ```
 partial interface VRDisplay {
@@ -53,6 +53,23 @@ struct VRHit {
 ```
 
 The `modelMatrix` property is a 4x4 transformation matrix represented as a Float32Array of size 16, encoding the position and orientation of some object in the real world.
+
+It's also possible to subscribe to events that deliver information on detected planes in the real world. The VRDisplay object is an EventTarget that fires 3 additional events ('planesadded', 'planesremoved', 'planesupdates') as response to changing in the detected planes.
+
+```
+interface VRPlane {
+  readonly attribute long identifier;
+  // A 4x4 transformation matrix, encoding the position and orientation of the plane
+  readonly attribute Float32Array? modelMatrix;
+  // Contains a values [x, z] that represent the extents relative to the plane
+  readonly attribute Float32Array? extent;
+  // An array of values group by x,y,z values of a series of vertices
+  // representing this plane. [p0x, p0y, p0z, p1x, p1y, p1z, ...]
+  readonly attribute Float32Array? vertices;
+}
+```
+
+See [webvr_ar_extension.idl] for the structure of VRPlane, VRHit, and others.
 
 ## Using the WebVR extension API for AR
 
@@ -89,14 +106,44 @@ frameData.leftProjectionMatrix; // Float32Array(16)
 
 The AR extension on top of WebVR allows to cast a ray from the camera to the real world and obtain a list of hits (if any). [This code example](https://github.com/google-ar/three.ar.js/blob/e871fe9ed806ef3be233fd9cc86ffc5a6a7a1382/examples/spawn-at-surface.html#L232-L248) shows how to make that call and process the resulting information.
 
-[WebVR 1.1 API]: https://w3c.github.io/webvr/spec/1.1/
-[WebVR 2.0 API]: https://github.com/w3c/webvr/blob/master/explainer.md
+### Getting planes data
+
+Listening to events in the `VRDisplay` allows a developer to observe changes in the underlying plane detection. There are `planesadded`, `planesupdated` and `planesremoved` events. This feature was added in October 2017 in [WebARonARCore] and [WebARonARKit] and an example rendering surfaces from these events can [be seen here](https://google-ar.github.io/three.ar.js/examples/surfaces.html). Note that on ARCore, planes can be convex polygons, and on ARKit, planes are always rectangular.
+
+```js
+display.addEventListener('planesadded', e => {
+  console.log(`Planes added for ${e.display}`);
+  e.planes.forEach(plane => {
+    console.log(`
+      Added plane ${plane.identifier} at ${plane.modelMatrix},
+      with extent ${plane.extent} with vertices ${plane.vertices}
+    `);
+  });
+});
+```
+
+It's also possible to just fetch the current planes detected. While less performant than subscribing to events, it may be desirable to just get a snapshot of the current planes. For example, a developer may fetch planes for one point in time rather than managing the plane changes, or want to fetch planes before subscribing to events for an accurate representation.
+
+```js
+display.getPlanes().forEach(plane => {
+  console.log(`
+    Found plane ${plane.identifier} at ${plane.modelMatrix},
+    with extent ${plane.extent} with vertices ${plane.vertices}
+  `);
+});
+```
+
+[WebVR 1.1 API]: https://immersive-web.github.io/webvr/spec/1.1/
+[WebVR 2.0 API]: https://immersive-web.github.io/webxr/spec/latest/
 [6DOF]: https://en.wikipedia.org/wiki/Six_degrees_of_freedom
 [VRFrameData]: https://developer.mozilla.org/en-US/docs/Web/API/VRFrameData
-[VRFrameData]: https://developer.mozilla.org/en-US/docs/Web/API/VRPose
+[VRPose]: https://developer.mozilla.org/en-US/docs/Web/API/VRPose
 [VRDisplayCapabilities]: https://developer.mozilla.org/en-US/docs/Web/API/VRDisplayCapabilities
 [VRDisplay]: https://developer.mozilla.org/en-US/docs/Web/API/VRDisplay
 [getVRDisplays]: https://developer.mozilla.org/en-US/docs/Web/API/Navigator/getVRDisplays
 [three.js]: https://threejs.org/
 [VRControls]: https://github.com/google-ar/three.ar.js/blob/e871fe9ed806ef3be233fd9cc86ffc5a6a7a1382/third_party/three.js/VRControls.js#L87
+[WebARonARKit]: https://github.com/google-ar/WebARonARKit
+[WebARonARCore]: https://github.com/google-ar/WebARonARCore
+[webvr_ar_extension.idl]: webvr_ar_extension.idl
 

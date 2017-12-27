@@ -18,21 +18,21 @@ import { Color, Matrix4, Quaternion, Vector3 } from 'three';
 import { loadMtl, loadObj } from './loaders';
 
 const colors = [
-    '#F44336',
-    '#E91E63',
-    '#9C27B0',
-    '#673AB7',
-    '#3F51B5',
-    '#2196F3',
-    '#03A9F4',
-    '#00BCD4',
-    '#009688',
-    '#4CAF50',
-    '#8BC34A',
-    '#CDDC39',
-    '#FFEB3B',
-    '#FFC107',
-    '#FF9800',
+  '#F44336',
+  '#E91E63',
+  '#9C27B0',
+  '#673AB7',
+  '#3F51B5',
+  '#2196F3',
+  '#03A9F4',
+  '#00BCD4',
+  '#009688',
+  '#4CAF50',
+  '#8BC34A',
+  '#CDDC39',
+  '#FFEB3B',
+  '#FFC107',
+  '#FF9800',
 ].map(hex => new Color(hex));
 
 const LEARN_MORE_LINK = 'https://developers.google.com/ar/develop/web/getting-started';
@@ -44,11 +44,11 @@ const UNSUPPORTED_MESSAGE = `This augmented reality experience requires
 const ARUtils = Object.create(null);
 
 ARUtils.isTango = display =>
-    display && display.displayName.toLowerCase().includes('tango');
+  display && display.displayName.toLowerCase().includes('tango');
 export const isTango = ARUtils.isTango;
 
 ARUtils.isARKit = display =>
-    display && display.displayName.toLowerCase().includes('arkit');
+  display && display.displayName.toLowerCase().includes('arkit');
 export const isARKit = ARUtils.isARKit;
 
 ARUtils.isARDisplay = display => isARKit(display) || isTango(display);
@@ -61,25 +61,25 @@ export const isARDisplay = ARUtils.isARDisplay;
  * @return {Promise<VRDisplay?>}
  */
 ARUtils.getARDisplay = () => new Promise((resolve, reject) => {
-    if (!navigator.getVRDisplays) {
-        resolve(null);
-        return;
+  if (!navigator.getVRDisplays) {
+    resolve(null);
+    return;
+  }
+
+  navigator.getVRDisplays().then(displays => {
+    if (!displays && displays.length === 0) {
+      resolve(null);
+      return;
     }
 
-    navigator.getVRDisplays().then(displays => {
-        if (!displays && displays.length === 0) {
-            resolve(null);
-            return;
-        }
-
-        for (let display of displays) {
-            if (isARDisplay(display)) {
-                resolve(display);
-                return;
-            }
-        }
-        resolve(null);
-    });
+    for (let display of displays) {
+      if (isARDisplay(display)) {
+        resolve(display);
+        return;
+      }
+    }
+    resolve(null);
+  });
 });
 export const getARDisplay = ARUtils.getARDisplay;
 
@@ -100,37 +100,37 @@ export const getARDisplay = ARUtils.getARDisplay;
  * @return {THREE.Group}
  */
 ARUtils.loadModel = (config = {}) => new Promise((resolve, reject) => {
-    const { mtlPath, objPath } = config;
-    const OBJLoader = config.OBJLoader || (global.THREE ? global.THREE.OBJLoader : null);
-    const MTLLoader = config.MTLLoader || (global.THREE ? global.THREE.MTLLoader : null);
+  const { mtlPath, objPath } = config;
+  const OBJLoader = config.OBJLoader || (global.THREE ? global.THREE.OBJLoader : null);
+  const MTLLoader = config.MTLLoader || (global.THREE ? global.THREE.MTLLoader : null);
 
-    if (!config.objPath) {
-        reject(new Error('`objPath` must be specified.'));
-        return;
+  if (!config.objPath) {
+    reject(new Error('`objPath` must be specified.'));
+    return;
+  }
+
+  if (!OBJLoader) {
+    reject(new Error('Missing OBJLoader as third argument, or window.THREE.OBJLoader existence'));
+    return;
+  }
+
+  if (config.mtlPath && !MTLLoader) {
+    reject(new Error('Missing MTLLoader as fourth argument, or window.THREE.MTLLoader existence'));
+    return;
+  }
+
+  let p = Promise.resolve();
+
+  if (mtlPath) {
+    p = loadMtl(mtlPath, MTLLoader);
+  }
+
+  p.then(materialCreator => {
+    if (materialCreator) {
+      materialCreator.preload();
     }
-
-    if (!OBJLoader) {
-        reject(new Error('Missing OBJLoader as third argument, or window.THREE.OBJLoader existence'));
-        return;
-    }
-
-    if (config.mtlPath && !MTLLoader) {
-        reject(new Error('Missing MTLLoader as fourth argument, or window.THREE.MTLLoader existence'));
-        return;
-    }
-
-    let p = Promise.resolve();
-
-    if (mtlPath) {
-        p = loadMtl(mtlPath, MTLLoader);
-    }
-
-    p.then(materialCreator => {
-        if (materialCreator) {
-            materialCreator.preload();
-        }
-        return loadObj(objPath, materialCreator, OBJLoader);
-    }).then(resolve, reject);
+    return loadObj(objPath, materialCreator, OBJLoader);
+  }).then(resolve, reject);
 });
 export const loadModel = ARUtils.loadModel;
 
@@ -152,25 +152,25 @@ const tempScale = new Vector3();
  * @param {boolean} applyOrientation
  */
 ARUtils.placeObjectAtHit = (object, hit, easing = 1, applyOrientation = false) => {
-    if (!hit || !hit.modelMatrix) {
-        throw new Error('placeObjectAtHit requires a VRHit object');
+  if (!hit || !hit.modelMatrix) {
+    throw new Error('placeObjectAtHit requires a VRHit object');
+  }
+
+  model.fromArray(hit.modelMatrix);
+
+  model.decompose(tempPos, tempQuat, tempScale);
+
+  if (easing === 1) {
+    object.position.copy(tempPos);
+    if (applyOrientation) {
+      object.quaternion.copy(tempQuat);
     }
-
-    model.fromArray(hit.modelMatrix);
-
-    model.decompose(tempPos, tempQuat, tempScale);
-
-    if (easing === 1) {
-        object.position.copy(tempPos);
-        if (applyOrientation) {
-            object.quaternion.copy(tempQuat);
-        }
-    } else {
-        object.position.lerp(tempPos, easing);
-        if (applyOrientation) {
-            object.quaternion.slerp(tempQuat, easing);
-        }
+  } else {
+    object.position.lerp(tempPos, easing);
+    if (applyOrientation) {
+      object.quaternion.slerp(tempQuat, easing);
     }
+  }
 };
 export const placeObjectAtHit = ARUtils.placeObjectAtHit;
 
@@ -179,7 +179,7 @@ export const placeObjectAtHit = ARUtils.placeObjectAtHit;
  * @return {THREE.Color}
  */
 ARUtils.getRandomPaletteColor = () => {
-    return colors[Math.floor(Math.random() * colors.length)];
+  return colors[Math.floor(Math.random() * colors.length)];
 };
 export const getRandomPaletteColor = ARUtils.getRandomPaletteColor;
 
@@ -190,20 +190,20 @@ export const getRandomPaletteColor = ARUtils.getRandomPaletteColor;
  * @param {string} customMessage
  */
 ARUtils.displayUnsupportedMessage = customMessage => {
-    const element = document.createElement('div');
-    element.id = 'webgl-error-message';
-    element.style.fontFamily = 'monospace';
-    element.style.fontSize = '13px';
-    element.style.fontWeight = 'normal';
-    element.style.textAlign = 'center';
-    element.style.background = '#fff';
-    element.style.border = '1px solid black';
-    element.style.color = '#000';
-    element.style.padding = '1.5em';
-    element.style.width = '400px';
-    element.style.margin = '5em auto 0';
-    element.innerHTML = typeof(customMessage) === 'string' ? customMessage : UNSUPPORTED_MESSAGE;
-    document.body.appendChild(element);
+  const element = document.createElement('div');
+  element.id = 'webgl-error-message';
+  element.style.fontFamily = 'monospace';
+  element.style.fontSize = '13px';
+  element.style.fontWeight = 'normal';
+  element.style.textAlign = 'center';
+  element.style.background = '#fff';
+  element.style.border = '1px solid black';
+  element.style.color = '#000';
+  element.style.padding = '1.5em';
+  element.style.width = '400px';
+  element.style.margin = '5em auto 0';
+  element.innerHTML = typeof(customMessage) === 'string' ? customMessage : UNSUPPORTED_MESSAGE;
+  document.body.appendChild(element);
 };
 export const displayUnsupportedMessage = ARUtils.displayUnsupportedMessage;
 

@@ -26,19 +26,19 @@ import './ARSpeechRecognition';
 // we'll need to expose these objects directly by attaching
 // them on the THREE global
 if (typeof window !== 'undefined' && typeof window.THREE === 'object') {
-    window.THREE.ARDebug = ARDebug;
-    window.THREE.ARPerspectiveCamera = ARPerspectiveCamera;
-    window.THREE.ARReticle = ARReticle;
-    window.THREE.ARUtils = ARUtils;
-    window.THREE.ARView = ARView;
-    window.THREE.ARAnchorManager = ARAnchorManager;
+  window.THREE.ARDebug = ARDebug;
+  window.THREE.ARPerspectiveCamera = ARPerspectiveCamera;
+  window.THREE.ARReticle = ARReticle;
+  window.THREE.ARUtils = ARUtils;
+  window.THREE.ARView = ARView;
+  window.THREE.ARAnchorManager = ARAnchorManager;
 }
 
 export {
-    ARDebug,
-    ARPerspectiveCamera,
-    ARReticle,
-    ARUtils,
-    ARView,
-    ARAnchorManager,
+  ARDebug,
+  ARPerspectiveCamera,
+  ARReticle,
+  ARUtils,
+  ARView,
+  ARAnchorManager,
 };
