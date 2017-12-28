@@ -74,7 +74,7 @@
       * The render loop, called once per frame. Handles updating
       * our scene and rendering.
       */
-     var deg = 0;
+     var deg = -1.5;
 
      function update() {
          // Update our camera projection matrix in the event that
@@ -98,7 +98,8 @@
          renderer.render(scene, camera);
 
          if (models_obj) {
-             deg += 0.01;
+             deg += 0.001;
+             models_obj.rotation.x += 0.1;
              models_obj.position.set(Math.cos(deg) * 500 + camera.position.x, camera.position.y, Math.sin(deg) * 500 + camera.position.z);
          }
 
@@ -143,7 +144,11 @@
 
      var models_obj;
 
+     var texture = new THREE.TextureLoader().load("./models/earth/earth_ball.jpg");
+
      function loadModels() {
+
+
          THREE.ARUtils.loadModel({
              objPath: "./models/earth/earth_ball.obj",
              mtlPath: "./models/earth/earth_ball.mtl",
@@ -151,43 +156,34 @@
              MTLLoader: undefined, // uses window.THREE.MTLLoader by default
          }).then(function(group) {
              models_obj = group;
-             models_obj.rotation.x = -Math.PI / 2;
+             // models_obj.rotation.x = -Math.PI / 2;
 
              models_obj.children.forEach(function(mesh) {
-                 console.log(mesh);
-                 mesh.material = new THREE.MeshBasicMaterial({ 
-                    color: new THREE.TextureLoader().load("./models/earth/earth_ball.jpg")
-                })
+                 mesh.material.map = texture;
+                 console.log(texture);
+                 // mesh.material = new THREE.MeshNormalMaterial()
              });
              models_obj.scale.set(1, 1, 1);
-             models_obj.position.set(Math.cos(-0.9) * 800, camera.position.y, Math.sin(-0.9) * 800);
+             models_obj.position.set(300, camera.position.y, 300);
              scene.add(models_obj);
          });
 
-         // var mtlLoader = new THREE.MTLLoader();
-         // mtlLoader.setPath('models/chris/');
-         // mtlLoader.load('chris.mtl', function(materials) {
-         //     materials.preload();
+         // var objLoader = new THREE.OBJLoader();
+         // objLoader.load('models/earth/earth_ball.obj', function(obj) {
 
+         //     obj.traverse(function(child) {
+         //         if (child instanceof THREE.Mesh) {
+         //             child.material.map = texture;
+         //         }
+         //     });
 
-         //     var objLoader = new THREE.OBJLoader();
-         //     objLoader.setMaterials(materials);
-         //     objLoader.load('models/chris/chris.obj', function(obj) {
+         //     models_obj = obj;
+         //     models_obj.scale.set(1, 1, 1);
+         //     models_obj.position.set(300, camera.position.y, 300);
+         //     scene.add(models_obj);
 
-         //         obj.traverse(function(child) {
-         //             if (child instanceof THREE.Mesh) {
-         //                 child.material.map = new THREE.TextureLoader().load("models/chris/rainbow.png");
-         //             }
-         //         });
+         // }, function() {
 
-         //         models_obj = obj;
-         //         models_obj.scale.set(0.1, 0.1, 0.1);
-         //         models_obj.position.set(Math.cos(-0.6) * BOX_DISTANCE, camera.position.y - 0.25, Math.sin(-0.6) * BOX_DISTANCE);
-         //         scene.add(models_obj);
-
-         //     }, function() {
-
-         //     }, function() {});
-         // })
+         // }, function() {});
      }
  }
