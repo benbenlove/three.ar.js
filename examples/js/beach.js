@@ -74,6 +74,8 @@
       * The render loop, called once per frame. Handles updating
       * our scene and rendering.
       */
+     var deg = 0;
+
      function update() {
          // Update our camera projection matrix in the event that
          // the near or far planes have updated
@@ -95,7 +97,10 @@
          renderer.clearDepth();
          renderer.render(scene, camera);
 
-         models_obj && (models_obj.rotation.y += 0.1);
+         if (models_obj) {
+             deg += 0.01;
+             models_obj.position.set(Math.cos(deg) * 500 + camera.position.x, camera.position.y, Math.sin(deg) * 500 + camera.position.z);
+         }
 
          // Kick off the requestAnimationFrame to call this function
          // on the next frame
@@ -140,16 +145,22 @@
 
      function loadModels() {
          THREE.ARUtils.loadModel({
-             objPath: "./models/bug/LBug Obj MatTxt.obj",
-             mtlPath: "./models/bug/LBug Obj MatTxt.mtl",
+             objPath: "./models/earth/earth_ball.obj",
+             mtlPath: "./models/earth/earth_ball.mtl",
              OBJLoader: undefined, // uses window.THREE.OBJLoader by default
              MTLLoader: undefined, // uses window.THREE.MTLLoader by default
          }).then(function(group) {
              models_obj = group;
+             models_obj.rotation.x = -Math.PI / 2;
 
-             model.children.forEach(function(mesh) { mesh.material = new THREE.MeshLambertMaterial( { color: 0xdddddd };) });
+             models_obj.children.forEach(function(mesh) {
+                 console.log(mesh);
+                 mesh.material = new THREE.MeshBasicMaterial({ 
+                    color: new THREE.TextureLoader().load("./models/earth/earth_ball.jpg")
+                })
+             });
              models_obj.scale.set(1, 1, 1);
-             models_obj.position.set(Math.cos(-0.6) * 800, camera.position.y, Math.sin(-0.6) * 800);
+             models_obj.position.set(Math.cos(-0.9) * 800, camera.position.y, Math.sin(-0.9) * 800);
              scene.add(models_obj);
          });
 
