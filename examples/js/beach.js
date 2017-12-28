@@ -138,8 +138,8 @@
 
      function loadModels() {
          THREE.ARUtils.loadModel({
-             objPath: "./models/chris/chris.obj",
-             mtlPath: "./models/chris/chris.mtl",
+             objPath: "./models/bug/LBug Obj MatTxt.obj",
+             mtlPath: "./models/bug/LBug Obj MatTxt.mtl",
              OBJLoader: undefined, // uses window.THREE.OBJLoader by default
              MTLLoader: undefined, // uses window.THREE.MTLLoader by default
          }).then(function(group) {
