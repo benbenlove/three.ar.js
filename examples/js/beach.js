@@ -95,6 +95,8 @@
          renderer.clearDepth();
          renderer.render(scene, camera);
 
+         models_obj && models_obj.rotation.y += 0.1;
+
          // Kick off the requestAnimationFrame to call this function
          // on the next frame
          requestAnimationFrame(update);
