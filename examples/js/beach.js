@@ -145,8 +145,8 @@
          }).then(function(group) {
              models_obj = group;
              // model.children.forEach(function(mesh) { mesh.castShadow = true; });
-             models_obj.scale.set(0.3, 0.3, 0.3);
-             models_obj.position.set(Math.cos(-0.6) * BOX_DISTANCE, camera.position.y - 0.25, Math.sin(-0.6) * BOX_DISTANCE);
+             models_obj.scale.set(1, 1, 1);
+             models_obj.position.set(Math.cos(-0.6) * BOX_DISTANCE, camera.position.y - 3, Math.sin(-0.6) * BOX_DISTANCE);
              scene.add(models_obj);
          });
 
