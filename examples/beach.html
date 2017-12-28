@@ -58,7 +58,7 @@
         left: 0;
     }
 
-    .flipsnap{
+    .flipsnap {
         z-index: 10000;
     }
     </style>
@@ -88,12 +88,14 @@
     <script src="../third_party/three.js/VRControls.js"></script>
     <script src="../third_party/three.js/OBJLoader.js?t=1"></script>
     <script src="../third_party/three.js/MTLLoader.js?t=1"></script>
-
-
     <script src="../third_party/flipsnap.min.js"></script>
     <!-- <script src="../third_party/jquery.js"></script> -->
     <script src="../dist/three.ar.js?t=1"></script>
-    <script src="./js/beach.js?t=45"></script>
 </body>
+<script type="text/javascript">
+    var cc = document.createElement('script');
+    cc.setAttribute('src', './js/beach.js?t=' + Date.now());
+    document.head.appendChild(cc);
+</script>
 
 </html>

@@ -95,7 +95,7 @@
          renderer.clearDepth();
          renderer.render(scene, camera);
 
-         models_obj && models_obj.rotation.y += 0.1;
+         models_obj && (models_obj.rotation.y += 0.1);
 
          // Kick off the requestAnimationFrame to call this function
          // on the next frame
@@ -146,9 +146,10 @@
              MTLLoader: undefined, // uses window.THREE.MTLLoader by default
          }).then(function(group) {
              models_obj = group;
-             // model.children.forEach(function(mesh) { mesh.castShadow = true; });
+
+             model.children.forEach(function(mesh) { mesh.material = new THREE.MeshLambertMaterial( { color: 0xdddddd };) });
              models_obj.scale.set(1, 1, 1);
-             models_obj.position.set(Math.cos(-0.6) * BOX_DISTANCE, camera.position.y - 3, Math.sin(-0.6) * BOX_DISTANCE);
+             models_obj.position.set(Math.cos(-0.6) * 800, camera.position.y, Math.sin(-0.6) * 800);
              scene.add(models_obj);
          });
 
