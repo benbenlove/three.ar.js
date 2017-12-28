@@ -143,7 +143,7 @@
         // Creating the ARView, which is the object that handles
         // the rendering of the camera stream behind the three.js
         // scene
-        arView = new THREE.ARView(vrDisplay, renderer);
+        arView = new THREE.ARViewMock(vrDisplay, renderer);
 
         // The ARPerspectiveCamera is very similar to THREE.PerspectiveCamera,
         // except when using an AR-capable browser, the camera uses
